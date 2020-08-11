@@ -1,42 +1,34 @@
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.driver_context import InitCommandContext, AutoLoadCommandContext, ResourceCommandContext, \
-    AutoLoadAttribute, AutoLoadDetails, CancellationContext, ResourceRemoteCommandContext
+    AutoLoadDetails, CancellationContext, ResourceRemoteCommandContext
+from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
+from cloudshell.shell.core.session.logging_session import LoggingSessionContext
+
+from cloudshell.cp.openstack.openstack_shell import OpenStackShell
+from cloudshell.cp.openstack.resource_config import OSResourceConfig
 
 
 class OpenstackShell2GDriver(ResourceDriverInterface):
+    SHELL_NAME = "Openstack Shell 2G"
+
     def __init__(self):
+        self.os_shell = OpenStackShell()
+
+    def initialize(self, context: InitCommandContext):
+        """Called every time a new instance of the driver is created."""
         pass
 
-    def initialize(self, context):
+    def get_inventory(self, context: AutoLoadCommandContext) -> AutoLoadDetails:
+        """Called when the cloud provider resource is created in the inventory.
+
+        Method validates the values of the cloud provider attributes, entered by the user
+        as part of the cloud provider resource creation
         """
-        Called every time a new instance of the driver is created
-
-        This method can be left unimplemented but this is a good place to load and cache the driver configuration,
-        initiate sessions etc.
-        Whatever you choose, do not remove it.
-
-        :param InitCommandContext context: the context the command runs on
-        """
-        pass
-
-    def get_inventory(self, context):
-        """
-        Called when the cloud provider resource is created
-        in the inventory.
-
-        Method validates the values of the cloud provider attributes, entered by the user as part of the cloud provider resource creation.
-        In addition, this would be the place to assign values programmatically to optional attributes that were not given a value by the user.
-
-        If one of the validations failed, the method should raise an exception
-
-        :param AutoLoadCommandContext context: the context the command runs on
-        :return Attribute and sub-resource information for the Shell resource you can return an AutoLoadDetails object
-        :rtype: AutoLoadDetails
-        """
-
-        # run 'shellfoundry generate' in order to create classes that represent your data model
-
-        return AutoLoadDetails([], [])
+        with LoggingSessionContext(context) as logger:
+            logger.info("Starting Autoload command...")
+            api = CloudShellSessionContext(context).get_api()
+            conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
+            return self.os_shell.get_inventory(conf, logger)
 
     def Deploy(self, context, request, cancellation_context=None):
         """
