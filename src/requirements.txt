@@ -1,2 +1,2 @@
-cloudshell-shell-core>=5.0.3,<6.0.0
+cloudshell-shell-core~=5.0
 cloudshell-cp-core~=2.0
