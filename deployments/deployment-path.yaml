@@ -2,7 +2,7 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 
 metadata:
   template_name: OpenstackShell2G
-  template_author: Anonymous
+  template_author: Quali
   template_version: 0.1.0
   template_icon: shell-icon.png
 
@@ -14,16 +14,52 @@ imports:
 
 node_types:
 
-  vendor.resource.MyDeploymentPath:
+  vendor.resource.OpenStack Deploy Glance Image 2G:
     derived_from: cloudshell.nodes.CustomDeploymentOption
-
-#    ## custom attributes example for deployment option
-#    properties:
-#        Image Id:
-#            type: string
-#            description: The id of the image to be used for deploying the app
-#            default: ''
-
+    properties:
+      Image ID:
+        type: string
+        description: "The UUID of the Glance image to use.
+        The UUID can be found under the Horizon user interface."
+        default: ''
+        tags: [ user_input,editable_only_in_app_template ]
+      Instance Flavor:
+        type: string
+        description: "Optional. The OpenStack instance Flavor.
+        The instance flavor determines the CPU, memory and networking capacity of the VM.
+        For example: 'm1.tiny'."
+        default: ''
+        tags: [ user_input,editable_only_in_app_template ]
+      Add Floating IP:
+        type: boolean
+        description: "Use a floating IP to set a static IP using Neutron L3 agent and not using a DHCP service.
+        Floating IP is commonly used for accessing a machine from public networks while private IP
+        will be used by other instances in the same private networks."
+        default: ''
+        tags: [ user_input ]
+      Affinity Group ID:
+        type: string
+        description: "Optional. The UUID of the affinity group the VM will be associated with.
+        Affinity Groups will determine if a VMs are placed on the same compute node or on different nodes."
+        default: ''
+        tags: [ user_input ]
+      Availability Zone:
+        type: string
+        description: "Optional. Name of availability zone the VM will be associated with.
+        Availability zone used to group network nodes for making network resources highly available."
+        default: ''
+        tags: [ user_input ]
+      Floating IP Subnet ID:
+        type: string
+        description: The UUID of the subnet to use for Floating IPs.
+        default: ''
+        tags: [ user_input ]
+      Auto udev:
+        type: boolean
+        description: "Enable Linux udev rules to allow new interfaces to be recognized by the OS automatically.
+        When using Windows machines this attribute should be set to false."
+        default: True
+        tags: [ user_input ]
     artifacts:
       icon:
         file: shell-icon.png
