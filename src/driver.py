@@ -21,6 +21,7 @@ from cloudshell.cp.core.request_actions import (
 from cloudshell.cp.openstack import constants
 from cloudshell.cp.openstack.flows import delete_instance
 from cloudshell.cp.openstack.flows import DeployAppFromNovaImgFlow
+from cloudshell.cp.openstack.flows.connectivity_flow import ConnectivityFlow
 from cloudshell.cp.openstack.flows import PowerFlow
 from cloudshell.cp.openstack.flows import GetVMDetailsFlow
 from cloudshell.cp.openstack.flows import refresh_ip
@@ -90,7 +91,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     ):
         """Retrieves the VM's updated IP address from the OpenStack."""
         with LoggingSessionContext(context) as logger:
-            logger.info("Starting Remote Refresh IP command")
+            logger.info("Starting Refresh IP command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
@@ -107,7 +108,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     ) -> str:
         """Get instance operating system, specifications and networking information."""
         with LoggingSessionContext(context) as logger:
-            logger.info("Starting Deploy command")
+            logger.info("Starting Get VM Details command")
             logger.debug(f"Requests: {requests}")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
@@ -137,7 +138,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     def DeleteInstance(self, context: ResourceRemoteCommandContext, ports: List[str]):
         """Deletes the VM from the OpenStack."""
         with LoggingSessionContext(context) as logger:
-            logger.info("Starting PowerOn command")
+            logger.info("Starting Delete Instance command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
@@ -151,10 +152,11 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     ) -> str:
         """Connects/disconnect VMs to VLANs based on requested actions."""
         with LoggingSessionContext(context) as logger:
-            logger.info("Starting PowerOn command")
+            logger.info("Starting Connectivity command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
             os_api = OSApi(conf, logger)
+            return ConnectivityFlow(conf, os_api, logger).apply_connectivity_changes(request)
 
     def SetAppSecurityGroups(self, context, request):
         """
