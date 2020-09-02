@@ -1,7 +1,5 @@
-~~todo change address~~
-[![Build Status](https://travis-ci.org/QualiSystems/OpenStack-Shell.svg?branch=master)](https://travis-ci.org/QualiSystems/OpenStack-Shell)
-~~todo change to codecov~~
-[![Coverage Status](https://coveralls.io/repos/github/QualiSystems/OpenStack-Shell/badge.svg?branch=develop)](https://coveralls.io/github/QualiSystems/OpenStack-Shell?branch=develop)
+[![Build Status](https://travis-ci.org/QualiSystems/OpenStack-Shell-2G.svg?branch=master)](https://travis-ci.org/QualiSystems/OpenStack-Shell-2G)
+[![codecov](https://codecov.io/gh/QualiSystems/OpenStack-Shell-2G/branch/master/graph/badge.svg)](https://codecov.io/gh/QualiSystems/OpenStack-Shell-2G)
 
-# OpenstackShell
-A CloudShell 'Shell' that allows integrating OpenStack (Liberty ~~todo Liberty??~~ and above) as an App's deployment option in CloudShell.
+# OpenstackShell2G
+A CloudShell 'Shell' that allows integrating OpenStack as an App's deployment option in CloudShell.

@@ -1,32 +1,33 @@
 from typing import List
 
-from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
+from cloudshell.cp.core.cancellation_manager import CancellationContextManager
+from cloudshell.cp.core.request_actions import (
+    DeployedVMActions,
+    DeployVMRequestActions,
+    GetVMDetailsRequestActions,
+)
 from cloudshell.shell.core.driver_context import (
-    InitCommandContext,
     AutoLoadCommandContext,
-    ResourceCommandContext,
     AutoLoadDetails,
     CancellationContext,
+    InitCommandContext,
+    ResourceCommandContext,
     ResourceRemoteCommandContext,
 )
+from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
 from cloudshell.shell.core.session.logging_session import LoggingSessionContext
 
-from cloudshell.cp.core.cancellation_manager import CancellationContextManager
-from cloudshell.cp.core.request_actions import (
-    DeployVMRequestActions,
-    DeployedVMActions,
-    GetVMDetailsRequestActions,
-)
 from cloudshell.cp.openstack import constants
-from cloudshell.cp.openstack.flows import delete_instance
-from cloudshell.cp.openstack.flows import DeployAppFromNovaImgFlow
-from cloudshell.cp.openstack.flows.connectivity_flow import ConnectivityFlow
-from cloudshell.cp.openstack.flows import PowerFlow
-from cloudshell.cp.openstack.flows import GetVMDetailsFlow
-from cloudshell.cp.openstack.flows import refresh_ip
-from cloudshell.cp.openstack.models import OSNovaImgDeployedApp
-from cloudshell.cp.openstack.models import OSNovaImgDeployApp
+from cloudshell.cp.openstack.flows import (
+    ConnectivityFlow,
+    DeployAppFromNovaImgFlow,
+    GetVMDetailsFlow,
+    PowerFlow,
+    delete_instance,
+    refresh_ip,
+)
+from cloudshell.cp.openstack.models import OSNovaImgDeployApp, OSNovaImgDeployedApp
 from cloudshell.cp.openstack.os_api.api import OSApi
 from cloudshell.cp.openstack.os_api.services import validate_conf_and_connection
 from cloudshell.cp.openstack.resource_config import OSResourceConfig
@@ -126,7 +127,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     def PowerOff(self, context: ResourceRemoteCommandContext, ports: List[str]):
         """Method shuts down (or powers off) the VM instance."""
         with LoggingSessionContext(context) as logger:
-            logger.info("Starting PowerOn command")
+            logger.info("Starting PowerOff command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
@@ -156,25 +157,23 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
             os_api = OSApi(conf, logger)
-            return ConnectivityFlow(conf, os_api, logger).apply_connectivity_changes(request)
+            return ConnectivityFlow(conf, os_api, logger).apply_connectivity_changes(
+                request
+            )
 
-    def SetAppSecurityGroups(self, context, request):
-        """
-        Called via cloudshell API call
+    def SetAppSecurityGroups(
+        self, context: ResourceCommandContext, request: str
+    ) -> str:
+        """Set application security groups.
 
-        Programmatically set which ports will be open on each of the apps in the sandbox, and from
-        where they can be accessed. This is an optional command that may be implemented.
+        Programmatically set which ports will be open on each of the apps in the sandbox
+        and from where they can be accessed.
+        This is an optional command that may be implemented.
         Normally, all outbound traffic from a deployed app should be allowed.
         For inbound traffic, we may use this method to specify the allowed traffic.
-        An app may have several networking interfaces in the sandbox. For each such interface, this command allows to set
-        which ports may be opened, the protocol and the source CIDR
-
-        If operation fails, return a "success false" action result.
-
-        :param ResourceCommandContext context:
-        :param str request:
-        :return:
-        :rtype: str
+        An app may have several networking interfaces in the sandbox. For each such
+        interface, this command allows to set which ports may be opened, the protocol
+        and the source CIDR
         """
         pass
 
