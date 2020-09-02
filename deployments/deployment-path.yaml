@@ -25,7 +25,7 @@ node_types:
         tags: [ user_input,editable_only_in_app_template ]
       Instance Flavor:
         type: string
-        description: "Optional. The OpenStack instance Flavor.
+        description: "The OpenStack instance Flavor.
         The instance flavor determines the CPU, memory and networking capacity of the VM.
         For example: 'm1.tiny'."
         default: ''

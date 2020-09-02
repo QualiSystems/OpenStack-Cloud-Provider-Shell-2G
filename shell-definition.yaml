@@ -56,7 +56,7 @@ node_types:
       OpenStack Reserved Networks:
         type: string
         default: ''
-        description: "Reserved networks separated by comma ','.
+        description: "Reserved networks separated by semicolon ';'.
         vNICs configured to those networks won't be used for VM connectivity."
       OpenStack Physical Interface Name:
         type: string
@@ -142,7 +142,7 @@ node_types:
           OpenStack Reserved Networks:
             type: string
             default: ''
-            description: "Reserved networks separated by comma ','.
+            description: "Reserved networks separated by semicolon ';'.
             vNICs configured to those networks won't be used for VM connectivity."
           OpenStack Physical Interface Name:
             type: string
