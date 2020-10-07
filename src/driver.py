@@ -25,7 +25,9 @@ from cloudshell.cp.openstack.flows import (
     GetVMDetailsFlow,
     PowerFlow,
     delete_instance,
+    get_console,
     refresh_ip,
+    validate_console_type,
 )
 from cloudshell.cp.openstack.models import OSNovaImgDeployApp, OSNovaImgDeployedApp
 from cloudshell.cp.openstack.os_api.api import OSApi
@@ -179,3 +181,21 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
 
     def cleanup(self):
         pass
+
+    def get_console(
+        self,
+        context: ResourceRemoteCommandContext,
+        console_type: str,
+        ports: List[str],
+    ) -> str:
+        """Method spins up the VM."""
+        with LoggingSessionContext(context) as logger:
+            logger.info("Starting Get Console command")
+            validate_console_type(console_type)
+            api = CloudShellSessionContext(context).get_api()
+            conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
+            DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
+            resource = context.remote_endpoints[0]
+            actions = DeployedVMActions.from_remote_resource(resource, api)
+            os_api = OSApi(conf, logger)
+            return get_console(os_api, actions.deployed_app, console_type, logger)

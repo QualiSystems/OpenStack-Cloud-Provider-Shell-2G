@@ -15,5 +15,18 @@
             <Command Description="" DisplayName="Power On" Name="PowerOn" Tags="power" />
             <Command Description="" DisplayName="Power Off" Name="PowerOff" Tags="power" />
         </Category>
+        <Command Name="get_console" DisplayName="Get Console" Tags="" Description="">
+            <Parameters>
+                <Parameter
+                    Name="console_type"
+                    Type="Lookup"
+                    AllowedValues="Instance Console,Serial WebSocket Console"
+                    Mandatory="True"
+                    DefaultValue="Instance Console"
+                    DisplayName="Console Type"
+                    Description="The type of the console."
+                />
+            </Parameters>
+        </Command>
     </Layout>
 </Driver>
