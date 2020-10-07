@@ -182,13 +182,12 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
     def cleanup(self):
         pass
 
-    def get_console(
+    def console(
         self,
         context: ResourceRemoteCommandContext,
         console_type: str,
         ports: List[str],
     ) -> str:
-        """Method spins up the VM."""
         with LoggingSessionContext(context) as logger:
             logger.info("Starting Get Console command")
             validate_console_type(console_type)
@@ -198,4 +197,4 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
             os_api = OSApi(conf, logger)
-            return get_console(os_api, actions.deployed_app, console_type, logger)
+            return get_console(os_api, actions.deployed_app, console_type)
