@@ -60,3 +60,6 @@ target/
 cloudshell_config.yml
 
 .idea/
+.pip-download-cache/
+src/__init__.py
+src/_test.py
