@@ -71,11 +71,6 @@ node_types:
         For Open vSwitch plugin, the physical interface name is located in the
         '/etc/neutron/plugins/ml2/openvswitch_agent.ini' file under the 'bridge_mappings' attribute
         (example: bridge_mappings = public:br-vlan)."
-      Execution Server Selector:
-        type: string
-        default: ''
-        description: "This attribute points to a pre-defined group of execution servers.
-        Usually used for different sites or domains."
       Region:
         type: string
         default: ''
