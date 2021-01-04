@@ -1,9 +1,9 @@
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 metadata:
-  template_name: OpenstackShell2G
+  template_name: OpenStack Cloud Provider Shell 2G
   template_author: Quali
-  template_version: 0.1.1
+  template_version: 1.0.0
   template_icon: shell-icon.png
 
 description: >
@@ -13,7 +13,6 @@ imports:
   - cloudshell_standard: cloudshell_cloud_provider_standard_1_0_0.yaml
 
 node_types:
-
   vendor.resource.OpenStack Deploy Glance Image 2G:
     derived_from: cloudshell.nodes.CustomDeploymentOption
     properties:
@@ -62,10 +61,11 @@ node_types:
         tags: [ user_input ]
       Inbound Ports:
         type: string
-        default:
+        default: ""
         description: "CIDR, ports and protocol to open inbound traffic from outside of the sandbox.
         The syntax is [cidr:][protocol:]port-or-port-range; with semi-colon separation,
         for example: 0.0.0.0/0:tcp:80;443;udp:200-220. Default CIDR is 0.0.0.0/0, default protocol is tcp."
+        tags: [ user_input ]
     artifacts:
       icon:
         file: shell-icon.png
