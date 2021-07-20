@@ -79,8 +79,8 @@ For detailed information on each available commands, see the following section o
 
 [Common Cloud Provider Commands](https://github.com/QualiSystems/cloudshell-standards/blob/master/Documentation/cloud_provider_standard.md#commands)
 
-# Azure Integration Process
-In order to integrate CloudShell with Azure, you need to first deploy the CloudShell management and sandbox VNets on your Azure region. This is done using Azure templates that define the management and sandbox VNets, the connection to your Quali Server and more. Additional steps are required, such as configuring the integration's management VMs and creating App templates which include the definition of the VMs, images and configuration management to be performed on the deployed VMs. For details, see CloudShell Help's [Azure Integration](https://help.quali.com/Online%20Help/2021.2/portal/Content/Admn/Azure-VNET-Ovrv.htm) chapter.
+# OpenStack Integration Process
+In order to integrate CloudShell with OpenStack, you need to first prepare OpenStack with the required user permissions, quotas, networks etc. Then, create an OpenStack cloud provider resource and App templates which include the definition of the VMs, images and configuration management to be performed on the deployed VMs. For details, see CloudShell Help's [Azure Integration](https://help.quali.com/Online%20Help/0.0/portal/Content/Admn/OpenStack-Intgr) chapter.
 
 # Downloading the Shell
 The OpenStack Cloud Provider Shell 2G shell is available from the [Quali Community Integrations](https://community.quali.com/integrations) page. 
@@ -174,7 +174,7 @@ This attribute is typically used for different sites or domains. For additional 
 
 CloudShell validates provided settings and creates the new resource.
 
-_**OpenStack Cloud Provider Shell 2G requires you to set up an OpenStack integration with CloudShell and also create an appropriate App template, which would be deployed as part of the sandbox reservation. For details, see [OpenStack Integration](https://help.quali.com/Online%20Help/0.0/cloudshell/Content/Admn/OpenStack-Intgr.htm)**_
+_**OpenStack Cloud Provider Shell 2G requires you to set up an OpenStack cloud provider resource and also create an appropriate App template, which would be deployed as part of the sandbox reservation. For details, see [OpenStack Integration](https://help.quali.com/Online%20Help/0.0/cloudshell/Content/Admn/OpenStack-Intgr.htm)**_
 
 # Updating Python Dependencies for Shells
 This section explains how to update your Python dependencies folder. This is required when you upgrade a shell that uses new/updated dependencies. It applies to both online and offline dependencies.
