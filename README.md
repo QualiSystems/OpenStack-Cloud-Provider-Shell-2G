@@ -4,7 +4,7 @@
 A CloudShell 'Shell' that allows integrating OpenStack as an App's deployment option in CloudShell
 ![Image][1]
 
-Release date: July 2021
+Release date: January 2021
 
 `Shell version: 1.0.0`
 
