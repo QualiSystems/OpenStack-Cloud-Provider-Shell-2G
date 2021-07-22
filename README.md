@@ -91,8 +91,8 @@ The shell comprises:
 
 |File name|Description|
 |:---|:---|
-|OpenStack Cloud Provider Shell 2G.zip|Device shell package|
-|cloudshell-openstack-dependencies-package-1.0.x.zip|Shell Python dependencies (for offline deployments only)|
+|OpenStack.Cloud.Provider.Shell.2G.zip|Device shell package|
+|cloudshell-OpenStack-Cloud-Provider-Shell-2G-dependencies-linux-package-1.0.0.zip, cloudshell-OpenStack-Cloud-Provider-Shell-2G-dependencies-win32-package-1.0.0.zip|Shell Python dependencies (for offline deployments only)|
 
 # Importing and Configuring the Shell
 This section describes how to import the OpenStack Cloud Provider Shell 2G shell and configure and modify the shell’s devices.
