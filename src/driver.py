@@ -6,6 +6,9 @@ from cloudshell.cp.core.request_actions import (
     DeployVMRequestActions,
     GetVMDetailsRequestActions,
 )
+from cloudshell.cp.core.request_actions.save_restore_app import (
+    SaveRestoreRequestActions,
+)
 from cloudshell.shell.core.driver_context import (
     AutoLoadCommandContext,
     AutoLoadDetails,
@@ -13,6 +16,7 @@ from cloudshell.shell.core.driver_context import (
     InitCommandContext,
     ResourceCommandContext,
     ResourceRemoteCommandContext,
+    UnreservedResourceCommandContext,
 )
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
@@ -32,6 +36,7 @@ from cloudshell.cp.openstack.flows import (
     refresh_ip,
     validate_console_type,
 )
+from cloudshell.cp.openstack.flows.save_restore_app import SaveRestoreAppFlow
 from cloudshell.cp.openstack.models import OSNovaImgDeployApp, OSNovaImgDeployedApp
 from cloudshell.cp.openstack.os_api.api import OSApi
 from cloudshell.cp.openstack.os_api.services import validate_conf_and_connection
@@ -204,3 +209,37 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             actions = DeployedVMActions.from_remote_resource(resource, api)
             os_api = OSApi(conf, logger)
             return get_console(os_api, actions.deployed_app, console_type)
+
+    def SaveApp(
+        self,
+        context: ResourceCommandContext,
+        request: str,
+        cancellation_context: CancellationContext,
+    ) -> str:
+        with LoggingSessionContext(context) as logger:
+            logger.info("Starting Save App command")
+            api = CloudShellSessionContext(context).get_api()
+            conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api=api)
+            os_api = OSApi(conf, logger)
+            cancellation_manager = CancellationContextManager(cancellation_context)
+            actions = SaveRestoreRequestActions.from_request(request)
+            return SaveRestoreAppFlow(
+                os_api, conf, logger, cancellation_manager
+            ).save_apps(actions.save_app_actions)
+
+    def DeleteSavedApps(
+        self,
+        context: UnreservedResourceCommandContext,
+        request: str,
+        cancellation_context: CancellationContext,
+    ) -> str:
+        with LoggingSessionContext(context) as logger:
+            logger.info("Starting Delete Saved App command")
+            api = CloudShellSessionContext(context).get_api()
+            conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api=api)
+            os_api = OSApi(conf, logger)
+            cancellation_manager = CancellationContextManager(cancellation_context)
+            actions = SaveRestoreRequestActions.from_request(request)
+            return SaveRestoreAppFlow(
+                os_api, conf, logger, cancellation_manager
+            ).delete_saved_apps(actions.delete_saved_app_actions)

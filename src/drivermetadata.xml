@@ -10,6 +10,8 @@
             <Command Description="" DisplayName="Deploy" Name="Deploy" Tags="allow_unreserved" />
             <Command Description="" DisplayName="Set App Security Groups" Name="SetAppSecurityGroups" Tags="allow_unreserved" />
             <Command Description="" DisplayName="Get VmDetails" Name="GetVmDetails" Tags="allow_unreserved" />
+            <Command Description="" DisplayName="SaveApp" EnableCancellation="true" Name="SaveApp" Tags="allow_unreserved" />
+            <Command Description="" DisplayName="Delete Saved Apps" EnableCancellation="true" Name="DeleteSavedApps" Tags="allow_unreserved" />
         </Category>
         <Category Name="Power">
             <Command Description="" DisplayName="Power On" Name="PowerOn" Tags="power" />
