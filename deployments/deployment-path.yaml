@@ -3,7 +3,7 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 metadata:
   template_name: OpenStack Cloud Provider Shell 2G
   template_author: Quali
-  template_version: 1.0.0
+  template_version: 1.1.0
   template_icon: shell-icon.png
 
 description: >
@@ -18,7 +18,7 @@ node_types:
     properties:
       Image ID:
         type: string
-        description: "The UUID of the Glance image to use.
+        description: "The UUID of the Glance image/snapshot to use.
         The UUID can be found under the Horizon user interface."
         default: ''
         tags: [ user_input,editable_only_in_app_template ]
@@ -66,6 +66,15 @@ node_types:
         The syntax is [cidr:][protocol:]port-or-port-range; with semi-colon separation,
         for example: 0.0.0.0/0:tcp:80;443;udp:200-220. Default CIDR is 0.0.0.0/0, default protocol is tcp."
         tags: [ user_input ]
+      Behavior during save:
+        type: string
+        description: "Determines the VM behavior when the sandbox is saved. If Power off
+         is selected, and the VM was powered on before the save, then the VM will shut 
+         down for the duration of the save, and then be powered on at the end."
+        constraints:
+          - valid_values: [ "Remain Powered On", "Power Off" ]
+        default: "Remain Powered On"
+        tags: [ ]
     artifacts:
       icon:
         file: shell-icon.png
