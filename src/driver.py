@@ -17,6 +17,9 @@ from cloudshell.shell.core.driver_context import (
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.session.cloudshell_session import CloudShellSessionContext
 from cloudshell.shell.core.session.logging_session import LoggingSessionContext
+from cloudshell.shell.flows.connectivity.parse_request_service import (
+    ParseConnectivityRequestService,
+)
 
 from cloudshell.cp.openstack import constants
 from cloudshell.cp.openstack.flows import (
@@ -158,10 +161,13 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             logger.info("Starting Connectivity command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
-            os_api = OSApi(conf, logger)
-            return ConnectivityFlow(conf, os_api, logger).apply_connectivity_changes(
-                request
+            parse_connectivity_req_service = ParseConnectivityRequestService(
+                is_vlan_range_supported=False,
+                is_multi_vlan_supported=False,
             )
+            return ConnectivityFlow(
+                conf, parse_connectivity_req_service, logger
+            ).apply_connectivity(request)
 
     def SetAppSecurityGroups(
         self, context: ResourceCommandContext, request: str
