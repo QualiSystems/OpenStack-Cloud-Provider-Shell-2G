@@ -41,7 +41,8 @@ node_types:
       OpenStack Domain Name:
         type: string
         default: 'default'
-        description: OpenStack domain name to use.
+        description: "OpenStack domain name to use. Note, in the version Wallaby you 
+        should use domain ID instead of name."
       OpenStack Project Name:
         type: string
         default: ''
@@ -128,7 +129,8 @@ node_types:
           OpenStack Domain Name:
             type: string
             default: 'default'
-            description: OpenStack domain name to use.
+            description: "OpenStack domain name to use. Note, in the version Wallaby you 
+            should use domain ID instead of name."
           OpenStack Project Name:
             type: string
             default: ''
