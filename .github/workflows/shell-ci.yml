@@ -126,28 +126,6 @@ jobs:
       - name: Check version
         run: |
           ! diff <(echo "${{ steps.currentVersion.outputs.result }}") <(echo "${{ steps.masterVersion.outputs.result }}")
-  check-not-shell-in-shell-name:
-    name: Check "Shell" is not in the Shell name
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: get Node Type
-        id: getNodeType
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq e ".node_types | keys | .[0]" shell-definition.yaml
-      - name: Check shell is not in the Shell name
-        run: |
-          NODE_TYPE="${{ steps.getNodeType.outputs.result }}"
-          SHELL_NAME=`echo ${NODE_TYPE:16} | tr "[:upper:]" "[:lower:]"`
-          if [[ $SHELL_NAME == *" shell "* ]]
-          then
-            echo "You should remove 'Shell' from the Shell name"
-            exit 1
-          else
-            echo "not found"
-          fi
   create-gh-release:
     needs: [pre-commit, pack, download-linux-dependencies, download-windows-dependencies]
     if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
