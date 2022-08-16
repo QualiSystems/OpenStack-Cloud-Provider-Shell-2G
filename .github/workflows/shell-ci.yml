@@ -92,6 +92,9 @@ jobs:
         run: |
           python -m pip install pip -U
           pip download -r src/requirements.txt -d dependencies
+      - name: Prepare netifaces whl
+        run: |
+          pip wheel netifaces -w dependencies
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
