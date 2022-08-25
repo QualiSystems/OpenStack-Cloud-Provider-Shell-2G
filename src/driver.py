@@ -220,12 +220,11 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             logger.info("Starting Save App command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api=api)
-            os_api = OSApi(conf, logger)
             cancellation_manager = CancellationContextManager(cancellation_context)
             actions = SaveRestoreRequestActions.from_request(request)
-            return SaveRestoreAppFlow(
-                os_api, conf, logger, cancellation_manager
-            ).save_apps(actions.save_app_actions)
+            return SaveRestoreAppFlow(conf, logger, cancellation_manager).save_apps(
+                actions.save_app_actions
+            )
 
     def DeleteSavedApps(
         self,
@@ -237,9 +236,8 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             logger.info("Starting Delete Saved App command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api=api)
-            os_api = OSApi(conf, logger)
             cancellation_manager = CancellationContextManager(cancellation_context)
             actions = SaveRestoreRequestActions.from_request(request)
             return SaveRestoreAppFlow(
-                os_api, conf, logger, cancellation_manager
+                conf, logger, cancellation_manager
             ).delete_saved_apps(actions.delete_saved_app_actions)
