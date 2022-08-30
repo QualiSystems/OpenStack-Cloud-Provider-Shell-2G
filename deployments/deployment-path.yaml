@@ -59,6 +59,11 @@ node_types:
         When using Windows machines this attribute should be set to false."
         default: True
         tags: [ user_input ]
+      User data:
+        type: string
+        default: ""
+        description: "User data."
+        tags: [ user_input ]
       Inbound Ports:
         type: string
         default: ""
