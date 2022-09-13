@@ -38,6 +38,7 @@ from cloudshell.cp.openstack.flows import (
 )
 from cloudshell.cp.openstack.flows.save_restore_app import SaveRestoreAppFlow
 from cloudshell.cp.openstack.models import OSNovaImgDeployApp, OSNovaImgDeployedApp
+from cloudshell.cp.openstack.models.connectivity_models import OsConnectivityActionModel
 from cloudshell.cp.openstack.os_api.api import OSApi
 from cloudshell.cp.openstack.os_api.services import validate_conf_and_connection
 from cloudshell.cp.openstack.resource_config import OSResourceConfig
@@ -169,6 +170,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             parse_connectivity_req_service = ParseConnectivityRequestService(
                 is_vlan_range_supported=False,
                 is_multi_vlan_supported=False,
+                connectivity_model_cls=OsConnectivityActionModel,
             )
             return ConnectivityFlow(
                 conf, parse_connectivity_req_service, logger
