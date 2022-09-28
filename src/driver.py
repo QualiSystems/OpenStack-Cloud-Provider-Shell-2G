@@ -39,7 +39,7 @@ from cloudshell.cp.openstack.flows import (
 from cloudshell.cp.openstack.flows.save_restore_app import SaveRestoreAppFlow
 from cloudshell.cp.openstack.models import OSNovaImgDeployApp, OSNovaImgDeployedApp
 from cloudshell.cp.openstack.models.connectivity_models import OsConnectivityActionModel
-from cloudshell.cp.openstack.os_api.api import OSApi
+from cloudshell.cp.openstack.os_api.api import OsApi
 from cloudshell.cp.openstack.os_api.services import validate_conf_and_connection
 from cloudshell.cp.openstack.resource_config import OSResourceConfig
 
@@ -59,7 +59,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             logger.info("Starting Autoload command")
             api = CloudShellSessionContext(context).get_api()
             conf = OSResourceConfig.from_context(self.SHELL_NAME, context, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             validate_conf_and_connection(os_api, conf)
             return AutoLoadDetails([], [])
 
@@ -78,7 +78,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             cancellation_manager = CancellationContextManager(cancellation_context)
             DeployVMRequestActions.register_deployment_path(OSNovaImgDeployApp)
             request_actions = DeployVMRequestActions.from_request(request, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             return DeployAppFromNovaImgFlow(
                 conf, cancellation_manager, os_api, logger
             ).deploy(request_actions)
@@ -92,7 +92,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             return PowerFlow(os_api, actions.deployed_app, logger).power_on()
 
     def remote_refresh_ip(
@@ -109,7 +109,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             refresh_ip(os_api, actions.deployed_app, conf)
 
     def GetVmDetails(
@@ -127,7 +127,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             cancellation_manager = CancellationContextManager(cancellation_context)
             GetVMDetailsRequestActions.register_deployment_path(OSNovaImgDeployedApp)
             actions = GetVMDetailsRequestActions.from_request(requests, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             return GetVMDetailsFlow(
                 conf, cancellation_manager, os_api, logger
             ).get_vm_details(actions)
@@ -144,7 +144,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             return PowerFlow(os_api, actions.deployed_app, logger).power_off()
 
     def DeleteInstance(self, context: ResourceRemoteCommandContext, ports: List[str]):
@@ -156,7 +156,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             delete_instance(os_api, actions.deployed_app)
 
     def ApplyConnectivityChanges(
@@ -209,7 +209,7 @@ class OpenstackShell2GDriver(ResourceDriverInterface):
             DeployedVMActions.register_deployment_path(OSNovaImgDeployedApp)
             resource = context.remote_endpoints[0]
             actions = DeployedVMActions.from_remote_resource(resource, api)
-            os_api = OSApi(conf, logger)
+            os_api = OsApi.from_config(conf, logger)
             return get_console(os_api, actions.deployed_app, console_type)
 
     def SaveApp(
