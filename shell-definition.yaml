@@ -104,7 +104,7 @@ node_types:
             default: Describe the resource shell template
           hide_address:
             type: string
-            default: false
+            default: true
           Controller URL:
             type: string
             default: 'http://controller/identity'
