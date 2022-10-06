@@ -80,6 +80,12 @@ node_types:
           - valid_values: [ "Remain Powered On", "Power Off" ]
         default: "Remain Powered On"
         tags: [ ]
+      Private IP:
+        type: string
+        description: "The IP will be set for the management interface. The IP should be
+        inside the management network ranges. OpenStack doesn't allow to use the same IP
+        address for different instances."
+        tags: [ user_input ]
     artifacts:
       icon:
         file: shell-icon.png
