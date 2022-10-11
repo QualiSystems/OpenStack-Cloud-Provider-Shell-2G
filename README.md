@@ -192,6 +192,43 @@ In online mode, the execution server automatically downloads and extracts the ap
 **To update online Python dependencies:**
 * If there is a live instance of the shell's driver or script, terminate the shell’s instance, as explained [here](http://help.quali.com/Online%20Help/9.0/Portal/Content/CSP/MNG/Mng-Exctn-Srv-Exct.htm#Terminat). If an instance does not exist, the execution server will download the Python dependencies the next time a command of the driver or script runs.
 
+
+# Typical Workflows
+
+## Connecting OpenStack App to an existing network
+_This capability is supported for Apps based on OpenStack 2nd Gen shell version 1.2.0 and up._
+This section explains how to enable CloudShell to connect an OpenStack App to an existing network. This capability requires editing the VLAN Auto / VLAN Manual service models in Resource Manager Client.
+
+__Prerequisites:__
+* OpenStack network that has a subnet
+
+__To allow connecting to an existing VLAN network:__
+1. In Resource Manager Client, open the __Attributes__ explorer.
+2. Edit the __Virtual Network__ attribute.
+3. Unselect the __Read-only__ checkbox and click __OK__ and save.
+4. Open the __Resource Families__ explorer and expand the __Virtual Network__ family.
+5. Click the appropriate service model (__VLAN Auto / VLAN Manual__).
+6. From the model's __Attributes__ tab, select __Virtual Network__ and click __Edit Rules__.
+7. Select __User input__ and click __OK__ and save.
+8. In the blueprint, add the VLAN service and specify a network name or ID in the __Virtual Network__ field. Make sure to specify a value in the __VLAN ID__ field - this will be ignored but it must have a value as it's a system mandatory attribute.
+9. Click __Add__.
+
+## Specify Subnet CIDR for OpenStack VLAN service
+_This capability is supported for Apps based on OpenStack 2nd Gen shell version 1.2.0 and up._
+This capability requires editing the VLAN Auto / VLAN Manual service models in Resource Manager Client.
+
+__To allow connecting to an existing VLAN network:__
+1. In Resource Manager Client, open the __Attributes__ explorer.
+2. Add a new attribute with the following settings:
+   * Name: Subnet CIDR
+   * Attribute Type: String
+   * Value: CIDR string in the format CIDR[;Gateway][;First_IP-Last_IP]
+     For example: "192.168.10.0/24;192.168.10.1;192.168.10.30-192.168.10.50"
+3. Open __Resource Families > Virtual Networks__ and add the attribute to the appropriate service model (__VLAN Auto / VLAN Manual__).
+4. To allow the user to set the subnet CIDR, in the service model, select the attribute, click __Edit Rules__, and make sure __User input__ is selected.
+5. Save your changes in the __Resource Families__ explorer.
+
+
 # References
 To download and share integrations, see [Quali Community's Integrations](https://community.quali.com/integrations). 
 
