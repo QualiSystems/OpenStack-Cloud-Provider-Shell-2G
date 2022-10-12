@@ -77,9 +77,9 @@ node_types:
          is selected, and the VM was powered on before the save, then the VM will shut 
          down for the duration of the save, and then be powered on at the end."
         constraints:
-          - valid_values: [ "Remain Powered On", "Power Off" ]
-        default: "Remain Powered On"
-        tags: [ ]
+          - valid_values: [ "Remain Powered On", "Power Off", "Inherited" ]
+        default: "Inherited"
+        tags: [ user_input ]
       Private IP:
         type: string
         description: "The IP will be set for the management interface. The IP should be

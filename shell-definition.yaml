@@ -3,7 +3,7 @@ tosca_definitions_version: tosca_simple_yaml_1_0
 metadata:
   template_name: OpenStack Cloud Provider Shell 2G
   template_author: Quali
-  template_version: 1.2.0
+  template_version: 1.2.1
   template_icon: shell-icon.png
 
 description: >
@@ -87,6 +87,14 @@ node_types:
       Networking type:
         type: string
         default: 'L2'
+      Behavior during save:
+        type: string
+        default: "Power Off"
+        description: "Determines the VM behavior when the sandbox is saved. If Power
+        off is selected, and the VM was powered on before the save, then the VM 
+        will shut down for the duration of the save, and then be powered on at the end."
+        constraints:
+          - valid_values: [ "Remain Powered On", "Power Off" ]
     capabilities:
       concurrent_command_capability:
         type: cloudshell.capabilities.SupportConcurrentCommands
@@ -166,6 +174,15 @@ node_types:
             For Open vSwitch plugin, the physical interface name is located in the
             '/etc/neutron/plugins/ml2/openvswitch_agent.ini' file under the 'bridge_mappings' attribute
             (example: bridge_mappings = public:br-vlan)."
+          Behavior during save:
+            type: string
+            default: "Power Off"
+            description: "Determines the VM behavior when the sandbox is saved. If Power
+             off is selected, and the VM was powered on before the save, then the VM 
+             will shut down for the duration of the save, and then be powered on at the 
+             end."
+            constraints:
+              - valid_values: [ "Remain Powered On", "Power Off" ]
     artifacts:
       icon:
         file: shell-icon.png
